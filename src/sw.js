@@ -1,4 +1,4 @@
-var CACHE_NAME = '2021-01-10 09:10';
+var CACHE_NAME = '2021-02-10 01:00';
 var urlsToCache = [
   '/english-quiz/',
   '/english-quiz/4.lst',

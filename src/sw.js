@@ -1,4 +1,4 @@
-var CACHE_NAME = '2021-04-28 13:05';
+var CACHE_NAME = '2021-04-28 21:46';
 var urlsToCache = [
   '/english-quiz/',
   '/english-quiz/4.lst',
@@ -7,7 +7,7 @@ var urlsToCache = [
   '/english-quiz/eraser.svg',
   '/english-quiz/index.js',
   '/english-quiz/model/model.json',
-  '/english-quiz/model/group1-shard1of2.bin',
+  '/english-quiz/model/group1-shard1of1.bin',
   '/english-quiz/mp3/correct3.mp3',
   'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css',
   'https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js',

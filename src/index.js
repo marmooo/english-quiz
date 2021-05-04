@@ -68,7 +68,7 @@ function loopVoice() {
   var msg = new SpeechSynthesisUtterance(answer);
   msg.voice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
   msg.lang = 'en-US';
-  for (var i=0; i<10; i++) {
+  for (var i=0; i<5; i++) {
     speechSynthesis.speak(msg);
   }
 }

@@ -30,8 +30,8 @@ function toggleDarkMode() {
 }
 
 function toggleVoice(obj) {
-  speechSynthesis.cancel();
   if (localStorage.getItem('voice') == 1) {
+    speechSynthesis.cancel();
     localStorage.setItem('voice', 0);
     document.getElementById('voiceOn').classList.add('d-none');
     document.getElementById('voiceOff').classList.remove('d-none');
@@ -64,6 +64,7 @@ function loadVoices() {
 loadVoices();
 
 function loopVoice() {
+  speechSynthesis.cancel();
   var msg = new SpeechSynthesisUtterance(answer);
   msg.voice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
   msg.lang = 'en-US';
@@ -221,8 +222,11 @@ function changeProblem() {
   answer = en;
   hideAnswer();
   document.getElementById('wordLength').innerText = answer.length;
-  speechSynthesis.cancel();
-  loopVoice();
+  if (localStorage.getItem('voice') == 1) {
+    loopVoice();
+  } else {
+    speechSynthesis.cancel();
+  }
 }
 
 function initProblems() {

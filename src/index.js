@@ -1,4 +1,5 @@
-const letters = 'ABCDEFGHIJKLMNOPQRSTUVWZXYabcdefghijklmnopqrstuvwxyz';
+const tegakiPanel = document.getElementById('tegakiPanel');
+let canvases = [...tegakiPanel.getElementsByTagName('canvas')];
 const correctAudio = new Audio('/english-quiz/mp3/correct3.mp3');
 let pads = [];
 let problems = [];
@@ -74,7 +75,6 @@ function loopVoice() {
 }
 
 function setTegakiPanel() {
-  const tegakiPanel = document.getElementById('tegakiPanel');
   while (tegakiPanel.firstChild) {
     tegakiPanel.removeChild(tegakiPanel.lastChild);
   }
@@ -86,11 +86,7 @@ function setTegakiPanel() {
 }
 
 function showPredictResult(canvas, result) {
-  const tegakiPanel = document.getElementById('tegakiPanel');
-  let canvases;
-  if (firstRun) {
-    canvases = [...tegakiPanel.getElementsByTagName('canvas')];
-  } else {
+  if (!firstRun) {
     const boxes = tegakiPanel.getElementsByTagName('tegaki-box');
     canvases = [...boxes].map(box => box.shadowRoot.querySelector('canvas'));
   }
@@ -110,9 +106,9 @@ function showPredictResult(canvas, result) {
   }
   var reply = '';
   for (var i=0; i<canvases.length; i++) {
-    const result = canvases[i].getAttribute('data-predict');
-    if (result) {
-      reply += result;
+    const alphabet = canvases[i].getAttribute('data-predict');
+    if (alphabet) {
+      reply += alphabet;
     } else {
       reply += ' ';
     }
@@ -131,12 +127,7 @@ function initSignaturePad(canvas) {
     minDistance: 0,
   });
   pad.onEnd = function() {
-    var result = predict(this._canvas);
-    var reply = showPredictResult(this._canvas, result);
-    console.log(reply, answer);
-    if (reply == answer) {
-      correctAudio.play();
-    }
+    predict(this._canvas);
   }
   return pad;
 }
@@ -168,26 +159,10 @@ function getImageData(drawElement) {
   return imageData;
 }
 
-function top2(arr) {
-  var max1 = 0;
-  var max2 = 0;
-  arr.forEach(x => {
-    if (max1 < x) {
-      max2 = max1;
-      max1 = x;
-    }
-  });
-  return [max1, max2];
-}
-
 function predict(canvas) {
-  // 上位2件までに入っていれば OK (bymerge)
-  var imageData = getImageData(canvas);
-  var accuracyScores = getAccuracyScores(imageData);
-  var [max1, max2] = top2(accuracyScores);
-  var letter1 = letters[accuracyScores.indexOf(max1)]
-  var letter2 = letters[accuracyScores.indexOf(max2)];
-  return [letter1, letter2];
+  const imageData = getImageData(canvas);
+  const pos = canvases.indexOf(canvas);
+  worker.postMessage({ imageData:imageData, pos:pos });
 }
 
 function unlockAudio() {
@@ -277,9 +252,7 @@ customElements.define('tegaki-box', class extends HTMLElement {
   }
 });
 
-var tegakiPanel = document.getElementById('tegakiPanel');
-var canvases = tegakiPanel.getElementsByTagName('canvas');
-[...canvases].forEach(canvas => {
+canvases.forEach(canvas => {
   const pad = initSignaturePad(canvas);
   pads.push(pad);
   canvas.parentNode.querySelector('.eraser').onclick = function() {
@@ -288,7 +261,11 @@ var canvases = tegakiPanel.getElementsByTagName('canvas');
   };
 });
 
-(async() => {
-  model = await tf.loadLayersModel('model/model.json');
-})();
+const worker = new Worker('worker.js');
+worker.addEventListener('message', function(e) {
+  var reply = showPredictResult(canvases[e.data.pos], e.data.result);
+  if (reply == answer) {
+    correctAudio.play();
+  }
+});
 

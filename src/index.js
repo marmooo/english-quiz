@@ -127,7 +127,7 @@ function initSignaturePad(canvas) {
     minDistance: 0,
   });
   pad.onEnd = function() {
-    predict(this._canvas);
+    predict(this.canvas);
   }
   return pad;
 }

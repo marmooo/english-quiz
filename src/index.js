@@ -205,10 +205,11 @@ function changeProblem() {
 }
 
 function initProblems() {
-  var grade = document.getElementById('grade').selectedIndex + 4;
+  const grade = document.getElementById('grade').selectedIndex + 2;
   fetch(grade + '.lst').then(response => response.text()).then(tsv => {
+    problems = [];
     tsv.split('\n').forEach(line => {
-      var [en, ja] = line.split("\t");
+      const [en, ja] = line.split("\t");
       problems.push([en, ja]);
     });
   });
@@ -260,6 +261,7 @@ canvases.forEach(canvas => {
     showPredictResult(canvas, ' ');
   };
 });
+document.getElementById('grade').onchange = initProblems;
 
 const worker = new Worker('worker.js');
 worker.addEventListener('message', function(e) {

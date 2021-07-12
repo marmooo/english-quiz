@@ -1,4 +1,4 @@
-const letters = 'ABCDEFGHIJKLMNOPQRSTUVWZXYabcdefghijklmnopqrstuvwxyz';
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 function getAccuracyScores(imageData) {
   const score = tf.tidy(() => {

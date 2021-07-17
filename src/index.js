@@ -356,6 +356,7 @@ worker.addEventListener('message', function(e) {
       correctCount += 1;
     }
     playAudio(correctAudio);
+    document.getElementById('reply').textContent = '◯' + answer;
   }
 });
 document.addEventListener('click', unlockAudio, { once:true, useCapture:true });

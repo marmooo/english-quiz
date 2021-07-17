@@ -205,7 +205,7 @@ function changeProblem() {
 }
 
 function initProblems() {
-  const grade = document.getElementById('grade').selectedIndex + 2;
+  const grade = document.getElementById('grade').selectedIndex;
   fetch(grade + '.lst').then(response => response.text()).then(tsv => {
     problems = [];
     tsv.split('\n').forEach(line => {

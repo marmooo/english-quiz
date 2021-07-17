@@ -22,7 +22,7 @@ function getRandomInt(min,max){min=Math.ceil(min);max=Math.floor(max);return Mat
 function hideAnswer(){var node=document.getElementById('answer');node.classList.add('d-none');}
 function showAnswer(){var node=document.getElementById('answer');node.classList.remove('d-none');node.innerText=answer;}
 function changeProblem(){var[en,ja]=problems[getRandomInt(0,problems.length-1)];var input=document.getElementById('cse-search-input-box-id');input.value=ja;answer=en;hideAnswer();document.getElementById('wordLength').innerText=answer.length;if(localStorage.getItem('voice')==1){loopVoice();}else{speechSynthesis.cancel();}}
-function initProblems(){const grade=document.getElementById('grade').selectedIndex+2;fetch(grade+'.lst').then(response=>response.text()).then(tsv=>{problems=[];tsv.split('\n').forEach(line=>{const[en,ja]=line.split("\t");problems.push([en,ja]);});});}
+function initProblems(){const grade=document.getElementById('grade').selectedIndex;fetch(grade+'.lst').then(response=>response.text()).then(tsv=>{problems=[];tsv.split('\n').forEach(line=>{const[en,ja]=line.split("\t");problems.push([en,ja]);});});}
 initProblems();function searchByGoogle(event){event.preventDefault();var input=document.getElementById('cse-search-input-box-id');var element=google.search.cse.element.getElement('searchresults-only0');changeProblem();if(input.value==''){element.clearAllResults();}else{element.execute(input.value);}
 setTegakiPanel();if(firstRun){const gophers=document.getElementById('gophers');while(gophers.firstChild){gophers.removeChild(gophers.lastChild);}
 unlockAudio();firstRun=false;}

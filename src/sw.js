@@ -1,4 +1,4 @@
-var CACHE_NAME = '2021-07-17 19:30';
+var CACHE_NAME = '2021-07-17 20:15';
 var urlsToCache = [
   '/english-quiz/',
   '/english-quiz/0.lst',
@@ -12,6 +12,7 @@ var urlsToCache = [
   '/english-quiz/index.js',
   '/english-quiz/model/model.json',
   '/english-quiz/model/group1-shard1of1.bin',
+  '/english-quiz/mp3/end.mp3',
   '/english-quiz/mp3/correct3.mp3',
   '/english-quiz/favicon/original.svg',
   '/english-quiz/signature_pad.min.js',

@@ -122,6 +122,10 @@ function loopVoice(text, n) {
   }
 }
 
+function respeak() {
+  loopVoice(answer, 1);
+}
+
 function setTegakiPanel() {
   while (tegakiPanel.firstChild) {
     tegakiPanel.removeChild(tegakiPanel.lastChild);

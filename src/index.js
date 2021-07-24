@@ -45,7 +45,7 @@ function toggleVoice(obj) {
     document.getElementById('voiceOn').classList.remove('d-none');
     document.getElementById('voiceOff').classList.add('d-none');
     unlockAudio();
-    loopVoice();
+    loopVoice(answer, 3);
   }
 }
 
@@ -107,17 +107,17 @@ function loadVoices() {
     }
   });
   allVoicesObtained.then(voices => {
-    englishVoices = voices.filter(voice => voice.lang == 'en-US' );
+    englishVoices = voices.filter(voice => voice.lang == 'en-US');
   });
 }
 loadVoices();
 
-function loopVoice() {
+function loopVoice(text, n) {
   speechSynthesis.cancel();
-  var msg = new SpeechSynthesisUtterance(answer);
+  var msg = new SpeechSynthesisUtterance(text);
   msg.voice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
   msg.lang = 'en-US';
-  for (var i=0; i<5; i++) {
+  for (var i=0; i<n; i++) {
     speechSynthesis.speak(msg);
   }
 }
@@ -228,7 +228,7 @@ function showAnswer() {
   node.innerText = answer;
 }
 
-function changeProblem() {
+function nextProblem() {
   var [en, ja] = problems[getRandomInt(0, problems.length - 1)];
   var input = document.getElementById('cse-search-input-box-id');
   input.value = ja;
@@ -236,7 +236,7 @@ function changeProblem() {
   hideAnswer();
   document.getElementById('wordLength').innerText = answer.length;
   if (localStorage.getItem('voice') == 1) {
-    loopVoice();
+    loopVoice(answer, 3);
   } else {
     speechSynthesis.cancel();
   }
@@ -258,7 +258,7 @@ function searchByGoogle(event) {
   event.preventDefault();
   var input = document.getElementById('cse-search-input-box-id');
   var element = google.search.cse.element.getElement('searchresults-only0');
-  changeProblem();
+  nextProblem();
   if (input.value == '') {
     element.clearAllResults();
   } else {

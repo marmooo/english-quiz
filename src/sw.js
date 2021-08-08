@@ -16,7 +16,7 @@ var urlsToCache = [
   '/english-quiz/mp3/correct3.mp3',
   '/english-quiz/favicon/original.svg',
   '/english-quiz/signature_pad.min.js',
-  'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css',
   'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js',
 ];
 

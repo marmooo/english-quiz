@@ -321,6 +321,7 @@ function countdown() {
       playPanel.classList.remove('d-none');
       correctCount = 0;
       document.getElementById('score').textContent = correctCount;
+      document.getElementById('searchButton').classList.add('animate__heartBeat');
       startGameTimer();
     }
   }, 1000);
@@ -360,8 +361,12 @@ worker.addEventListener('message', function(e) {
       correctCount += 1;
     }
     playAudio(correctAudio);
-    document.getElementById('reply').textContent = '◯' + answer;
+    document.getElementById('reply').textContent = '◯ ' + answer;
+    document.getElementById('searchButton').classList.add('animate__heartBeat');
   }
+});
+document.getElementById('searchButton').addEventListener('animationend', function() {
+  this.classList.remove('animate__heartBeat');
 });
 document.addEventListener('click', unlockAudio, { once:true, useCapture:true });
 

@@ -43,6 +43,7 @@
       html[data-theme="dark"] #gophers { filter: invert(1) hue-rotate(180deg); }
       html[data-theme="dark"] #___gcse_0 img { filter: invert(1) hue-rotate(180deg); }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" media="print" onload="this.media='all'">
   </head>
   <body>
     <header>
@@ -114,7 +115,7 @@
           <div class="d-flex flex-wrap justify-content-center">
             <form id="cse-search-box-form-id" class="pb-1">
               <input type="hidden" value="学校" id="cse-search-input-box-id">
-              <input type="submit" value="これなあに？" class="btn btn-primary btn-lg mx-1">
+              <input id="searchButton" type="submit" value="これなあに？" class="btn btn-primary btn-lg mx-1">
             </form>
             <div>
               <button onclick="showAnswer()" class="btn btn-secondary btn-lg mx-1">こたえ</button>

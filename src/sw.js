@@ -1,4 +1,4 @@
-var CACHE_NAME = '2021-08-09 00:08';
+var CACHE_NAME = '2021-08-10 09:15';
 var urlsToCache = [
   '/english-quiz/',
   '/english-quiz/0.lst',
@@ -18,6 +18,7 @@ var urlsToCache = [
   '/english-quiz/signature_pad.min.js',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css',
   'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js',
+  'https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css',
 ];
 
 self.addEventListener('install', function(event) {

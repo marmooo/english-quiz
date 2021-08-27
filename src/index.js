@@ -222,14 +222,12 @@ function getRandomInt(min, max) {
 }
 
 function hideAnswer() {
-  var node = document.getElementById('answer');
-  node.classList.add('d-none');
+  document.getElementById('answer').classList.add('d-none');
 }
 
 function showAnswer() {
-  var node = document.getElementById('answer');
-  node.classList.remove('d-none');
-  node.innerText = answer;
+  document.getElementById('answer').classList.remove('d-none');
+  document.getElementById('answerText').textContent = answer;
 }
 
 function nextProblem() {

@@ -2,50 +2,50 @@ let endAudio, correctAudio;
 loadAudios();
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
-const tegakiPanel = document.getElementById('tegakiPanel');
-let canvases = [...tegakiPanel.getElementsByTagName('canvas')];
+const tegakiPanel = document.getElementById("tegakiPanel");
+let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
 let pads = [];
 let problems = [];
-let answer = 'Gopher';
+let answerEn = "Gopher";
+let answerJa = "ゴファー";
 let firstRun = true;
-let canvasCache = document.createElement('canvas').getContext('2d');
-let model;
+const canvasCache = document.createElement("canvas").getContext("2d");
 let englishVoices = [];
 let correctCount = 0;
 
 function loadConfig() {
-  if (localStorage.getItem('darkMode') == 1) {
-    document.documentElement.dataset.theme = 'dark';
+  if (localStorage.getItem("darkMode") == 1) {
+    document.documentElement.dataset.theme = "dark";
   }
-  if (localStorage.getItem('voice') != 1) {
-    document.getElementById('voiceOn').classList.add('d-none');
-    document.getElementById('voiceOff').classList.remove('d-none');
+  if (localStorage.getItem("voice") != 1) {
+    document.getElementById("voiceOn").classList.add("d-none");
+    document.getElementById("voiceOff").classList.remove("d-none");
   }
 }
 loadConfig();
 
 function toggleDarkMode() {
-  if (localStorage.getItem('darkMode') == 1) {
-    localStorage.setItem('darkMode', 0);
+  if (localStorage.getItem("darkMode") == 1) {
+    localStorage.setItem("darkMode", 0);
     delete document.documentElement.dataset.theme;
   } else {
-    localStorage.setItem('darkMode', 1);
-    document.documentElement.dataset.theme = 'dark';
+    localStorage.setItem("darkMode", 1);
+    document.documentElement.dataset.theme = "dark";
   }
 }
 
-function toggleVoice(obj) {
-  if (localStorage.getItem('voice') == 1) {
+function toggleVoice() {
+  if (localStorage.getItem("voice") == 1) {
     speechSynthesis.cancel();
-    localStorage.setItem('voice', 0);
-    document.getElementById('voiceOn').classList.add('d-none');
-    document.getElementById('voiceOff').classList.remove('d-none');
+    localStorage.setItem("voice", 0);
+    document.getElementById("voiceOn").classList.add("d-none");
+    document.getElementById("voiceOff").classList.remove("d-none");
   } else {
-    localStorage.setItem('voice', 1);
-    document.getElementById('voiceOn').classList.remove('d-none');
-    document.getElementById('voiceOff').classList.add('d-none');
+    localStorage.setItem("voice", 1);
+    document.getElementById("voiceOn").classList.remove("d-none");
+    document.getElementById("voiceOff").classList.add("d-none");
     unlockAudio();
-    loopVoice(answer, 3);
+    loopVoice(answerEn, 3);
   }
 }
 
@@ -70,8 +70,8 @@ function unlockAudio() {
 
 function loadAudio(url) {
   return fetch(url)
-    .then(response => response.arrayBuffer())
-    .then(arrayBuffer => {
+    .then((response) => response.arrayBuffer())
+    .then((arrayBuffer) => {
       return new Promise((resolve, reject) => {
         audioContext.decodeAudioData(arrayBuffer, (audioBuffer) => {
           resolve(audioBuffer);
@@ -84,10 +84,10 @@ function loadAudio(url) {
 
 function loadAudios() {
   promises = [
-    loadAudio('mp3/end.mp3'),
-    loadAudio('mp3/correct3.mp3'),
+    loadAudio("mp3/end.mp3"),
+    loadAudio("mp3/correct3.mp3"),
   ];
-  Promise.all(promises).then(audioBuffers => {
+  Promise.all(promises).then((audioBuffers) => {
     endAudio = audioBuffers[0];
     correctAudio = audioBuffers[1];
   });
@@ -95,35 +95,35 @@ function loadAudios() {
 
 function loadVoices() {
   // https://stackoverflow.com/questions/21513706/
-  const allVoicesObtained = new Promise(function(resolve, reject) {
+  const allVoicesObtained = new Promise(function (resolve) {
     let voices = speechSynthesis.getVoices();
     if (voices.length !== 0) {
       resolve(voices);
     } else {
-      speechSynthesis.addEventListener("voiceschanged", function() {
+      speechSynthesis.addEventListener("voiceschanged", function () {
         voices = speechSynthesis.getVoices();
         resolve(voices);
       });
     }
   });
-  allVoicesObtained.then(voices => {
-    englishVoices = voices.filter(voice => voice.lang == 'en-US');
+  allVoicesObtained.then((voices) => {
+    englishVoices = voices.filter((voice) => voice.lang == "en-US");
   });
 }
 loadVoices();
 
 function loopVoice(text, n) {
   speechSynthesis.cancel();
-  var msg = new SpeechSynthesisUtterance(text);
+  const msg = new SpeechSynthesisUtterance(text);
   msg.voice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
-  msg.lang = 'en-US';
-  for (var i=0; i<n; i++) {
+  msg.lang = "en-US";
+  for (let i = 0; i < n; i++) {
     speechSynthesis.speak(msg);
   }
 }
 
 function respeak() {
-  loopVoice(answer, 1);
+  loopVoice(answerEn, 1);
 }
 
 function setTegakiPanel() {
@@ -131,39 +131,39 @@ function setTegakiPanel() {
     tegakiPanel.removeChild(tegakiPanel.lastChild);
   }
   pads = [];
-  for (var i=0; i<answer.length; i++) {
-    var box = document.createElement('tegaki-box');
+  for (let i = 0; i < answerEn.length; i++) {
+    const box = document.createElement("tegaki-box");
     tegakiPanel.appendChild(box);
   }
-  const boxes = tegakiPanel.getElementsByTagName('tegaki-box');
-  canvases = [...boxes].map(box => box.shadowRoot.querySelector('canvas'));
+  const boxes = tegakiPanel.getElementsByTagName("tegaki-box");
+  canvases = [...boxes].map((box) => box.shadowRoot.querySelector("canvas"));
 }
 
 function showPredictResult(canvas, result) {
-  var pos = canvases.indexOf(canvas);
-  var answerWord = answer[pos];
-  var matched = false;
-  for (var i=0; i<result.length; i++) {
+  const pos = canvases.indexOf(canvas);
+  const answerWord = answerEn[pos];
+  let matched = false;
+  for (let i = 0; i < result.length; i++) {
     if (result[i] == answerWord) {
       matched = true;
       break;
     }
   }
   if (matched) {
-    canvas.setAttribute('data-predict', answerWord);
+    canvas.setAttribute("data-predict", answerWord);
   } else {
-    canvas.setAttribute('data-predict', result[0]);
+    canvas.setAttribute("data-predict", result[0]);
   }
-  var reply = '';
-  for (var i=0; i<canvases.length; i++) {
-    const alphabet = canvases[i].getAttribute('data-predict');
+  let reply = "";
+  for (let i = 0; i < canvases.length; i++) {
+    const alphabet = canvases[i].getAttribute("data-predict");
     if (alphabet) {
       reply += alphabet;
     } else {
-      reply += ' ';
+      reply += " ";
     }
   }
-  document.getElementById('reply').innerText = reply;
+  document.getElementById("reply").innerText = reply;
   return reply;
 }
 
@@ -171,27 +171,15 @@ function initSignaturePad(canvas) {
   const pad = new SignaturePad(canvas, {
     minWidth: 2,
     maxWidth: 2,
-    penColor: 'black',
-    backgroundColor: 'white',
+    penColor: "black",
+    backgroundColor: "white",
     throttle: 0,
     minDistance: 0,
   });
-  pad.onEnd = function() {
+  pad.onEnd = function () {
     predict(this.canvas);
-  }
+  };
   return pad;
-}
-
-function getAccuracyScores(imageData) {
-  const score = tf.tidy(() => {
-    const channels = 1;
-    let input = tf.browser.fromPixels(imageData, channels);
-    input = tf.cast(input, 'float32').div(tf.scalar(255));
-    // input = input.flatten();  // mlp
-    input = input.expandDims();
-    return model.predict(input).dataSync();
-  });
-  return score;
 }
 
 function getImageData(drawElement) {
@@ -199,12 +187,12 @@ function getImageData(drawElement) {
   // resize
   canvasCache.drawImage(drawElement, 0, 0, inputWidth, inputHeight);
   // invert color
-  var imageData = canvasCache.getImageData(0, 0, inputWidth, inputHeight);
-  var data = imageData.data;
-  for (var i = 0; i < data.length; i+=4) {
+  const imageData = canvasCache.getImageData(0, 0, inputWidth, inputHeight);
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
     data[i] = 255 - data[i];
-    data[i+1] = 255 - data[i+1];
-    data[i+2] = 255 - data[i+2];
+    data[i + 1] = 255 - data[i + 1];
+    data[i + 2] = 255 - data[i + 2];
   }
   return imageData;
 }
@@ -212,7 +200,7 @@ function getImageData(drawElement) {
 function predict(canvas) {
   const imageData = getImageData(canvas);
   const pos = canvases.indexOf(canvas);
-  worker.postMessage({ imageData:imageData, pos:pos });
+  worker.postMessage({ imageData: imageData, pos: pos });
 }
 
 function getRandomInt(min, max) {
@@ -222,53 +210,60 @@ function getRandomInt(min, max) {
 }
 
 function hideAnswer() {
-  document.getElementById('answer').classList.add('d-none');
+  document.getElementById("answer").classList.add("d-none");
 }
 
 function showAnswer() {
-  document.getElementById('answer').classList.remove('d-none');
-  document.getElementById('answerText').textContent = answer;
+  document.getElementById("answer").classList.remove("d-none");
+  document.getElementById("answerEn").textContent = answerEn;
+  document.getElementById("answerJa").textContent = answerJa;
 }
 
 function nextProblem() {
-  var [en, ja] = problems[getRandomInt(0, problems.length - 1)];
-  var input = document.getElementById('cse-search-input-box-id');
+  const [en, ja] = problems[getRandomInt(0, problems.length - 1)];
+  const input = document.getElementById("cse-search-input-box-id");
+  answerEn = en;
+  answerJa = ja;
   input.value = ja;
-  answer = en;
   hideAnswer();
-  document.getElementById('wordLength').innerText = answer.length;
-  if (localStorage.getItem('voice') == 1) {
-    loopVoice(answer, 3);
+  if (document.getElementById("mode").textContent == "EASY") {
+    showAnswer();
+  }
+  document.getElementById("wordLength").innerText = answerEn.length;
+  if (localStorage.getItem("voice") == 1) {
+    loopVoice(answerEn, 3);
   } else {
     speechSynthesis.cancel();
   }
 }
 
 function initProblems() {
-  const grade = document.getElementById('grade').selectedIndex;
-  fetch(grade + '.lst').then(response => response.text()).then(tsv => {
-    problems = [];
-    tsv.split('\n').forEach(line => {
-      const [en, ja] = line.split("\t");
-      problems.push([en, ja]);
-    });
-  });
+  const grade = document.getElementById("grade").selectedIndex;
+  fetch("data/" + grade + ".tsv").then((response) => response.text()).then(
+    (tsv) => {
+      problems = [];
+      tsv.split("\n").forEach((line) => {
+        const [en, ja] = line.split("\t");
+        problems.push([en, ja]);
+      });
+    },
+  );
 }
 initProblems();
 
 function searchByGoogle(event) {
   event.preventDefault();
-  var input = document.getElementById('cse-search-input-box-id');
-  var element = google.search.cse.element.getElement('searchresults-only0');
+  const input = document.getElementById("cse-search-input-box-id");
+  const element = google.search.cse.element.getElement("searchresults-only0");
   nextProblem();
-  if (input.value == '') {
+  if (input.value == "") {
     element.clearAllResults();
   } else {
     element.execute(input.value);
   }
   setTegakiPanel();
   if (firstRun) {
-    const gophers = document.getElementById('gophers');
+    const gophers = document.getElementById("gophers");
     while (gophers.firstChild) {
       gophers.removeChild(gophers.lastChild);
     }
@@ -277,24 +272,24 @@ function searchByGoogle(event) {
   }
   return false;
 }
-document.getElementById('cse-search-box-form-id').onsubmit = searchByGoogle;
+document.getElementById("cse-search-box-form-id").onsubmit = searchByGoogle;
 
 let gameTimer;
 function startGameTimer() {
   clearInterval(gameTimer);
-  const timeNode = document.getElementById('time');
-  timeNode.innerText = '180秒 / 180秒';
-  gameTimer = setInterval(function() {
-    const arr = timeNode.innerText.split('秒 /');
+  const timeNode = document.getElementById("time");
+  timeNode.innerText = "180秒 / 180秒";
+  gameTimer = setInterval(function () {
+    const arr = timeNode.innerText.split("秒 /");
     const t = parseInt(arr[0]);
     if (t > 0) {
-      timeNode.innerText = (t-1) + '秒 /' + arr[1];
+      timeNode.innerText = (t - 1) + "秒 /" + arr[1];
     } else {
       clearInterval(gameTimer);
       playAudio(endAudio);
-      playPanel.classList.add('d-none');
-      scorePanel.classList.remove('d-none');
-      document.getElementById('score').textContent = correctCount;
+      playPanel.classList.add("d-none");
+      scorePanel.classList.remove("d-none");
+      document.getElementById("score").textContent = correctCount;
     }
   }, 1000);
 }
@@ -302,69 +297,98 @@ function startGameTimer() {
 let countdownTimer;
 function countdown() {
   clearTimeout(countdownTimer);
-  gameStart.classList.remove('d-none');
-  playPanel.classList.add('d-none');
-  scorePanel.classList.add('d-none');
-  const counter = document.getElementById('counter');
+  gameStart.classList.remove("d-none");
+  playPanel.classList.add("d-none");
+  scorePanel.classList.add("d-none");
+  const counter = document.getElementById("counter");
   counter.innerText = 3;
-  countdownTimer = setInterval(function(){
-    const colors = ['skyblue', 'greenyellow', 'violet', 'tomato'];
+  countdownTimer = setInterval(function () {
+    const colors = ["skyblue", "greenyellow", "violet", "tomato"];
     if (parseInt(counter.innerText) > 1) {
       const t = parseInt(counter.innerText) - 1;
       counter.style.backgroundColor = colors[t];
       counter.innerText = t;
     } else {
       clearTimeout(countdownTimer);
-      gameStart.classList.add('d-none');
-      playPanel.classList.remove('d-none');
+      gameStart.classList.add("d-none");
+      playPanel.classList.remove("d-none");
       correctCount = 0;
-      document.getElementById('score').textContent = correctCount;
-      document.getElementById('searchButton').classList.add('animate__heartBeat');
+      document.getElementById("score").textContent = correctCount;
+      document.getElementById("searchButton").classList.add(
+        "animate__heartBeat",
+      );
       startGameTimer();
     }
   }, 1000);
 }
 
-
-customElements.define('tegaki-box', class extends HTMLElement {
-  constructor() {
-    super();
-    const template = document.getElementById('tegaki-box').content.cloneNode(true);
-    const canvas = template.querySelector('canvas');
-    const pad = initSignaturePad(canvas);
-    template.querySelector('.eraser').onclick = function() {
-      pad.clear();
-    };
-    pads.push(pad);
-    this.attachShadow({ mode:'open' }).appendChild(template);
+function changeMode() {
+  if (this.textContent == "EASY") {
+    this.textContent = "HARD";
+  } else {
+    this.textContent = "EASY";
   }
-});
+}
 
-canvases.forEach(canvas => {
+customElements.define(
+  "tegaki-box",
+  class extends HTMLElement {
+    constructor() {
+      super();
+      const template = document.getElementById("tegaki-box").content.cloneNode(
+        true,
+      );
+      const canvas = template.querySelector("canvas");
+      const pad = initSignaturePad(canvas);
+      template.querySelector(".eraser").onclick = function () {
+        pad.clear();
+      };
+      pads.push(pad);
+      this.attachShadow({ mode: "open" }).appendChild(template);
+    }
+  },
+);
+
+canvases.forEach((canvas) => {
   const pad = initSignaturePad(canvas);
   pads.push(pad);
-  canvas.parentNode.querySelector('.eraser').onclick = function() {
+  canvas.parentNode.querySelector(".eraser").onclick = function () {
     pad.clear();
-    showPredictResult(canvas, ' ');
+    showPredictResult(canvas, " ");
   };
 });
-document.getElementById('grade').onchange = initProblems;
 
-const worker = new Worker('worker.js');
-worker.addEventListener('message', function(e) {
-  var reply = showPredictResult(canvases[e.data.pos], e.data.result);
-  if (reply == answer) {
-    var noHint = document.getElementById('answer').classList.contains('d-none');
+const worker = new Worker("worker.js");
+worker.addEventListener("message", function (e) {
+  const reply = showPredictResult(canvases[e.data.pos], e.data.result);
+  if (reply == answerEn) {
+    const noHint = document.getElementById("answer").classList.contains(
+      "d-none",
+    );
     if (noHint) {
       correctCount += 1;
     }
     playAudio(correctAudio);
-    document.getElementById('reply').textContent = '◯ ' + answer;
-    document.getElementById('searchButton').classList.add('animate__heartBeat');
+    document.getElementById("reply").textContent = "◯ " + answerEn;
+    document.getElementById("searchButton").classList.add("animate__heartBeat");
   }
 });
-document.getElementById('searchButton').addEventListener('animationend', function() {
-  this.classList.remove('animate__heartBeat');
-});
-document.addEventListener('click', unlockAudio, { once:true, useCapture:true });
 
+document.getElementById("mode").onclick = changeMode;
+document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
+document.getElementById("toggleVoice").onclick = toggleVoice;
+document.getElementById("respeak").onclick = respeak;
+document.getElementById("restartButton").onclick = countdown;
+document.getElementById("startButton").onclick = countdown;
+document.getElementById("showAnswer").onclick = showAnswer;
+document.getElementById("grade").onchange = initProblems;
+document.getElementById("searchButton").addEventListener(
+  "animationend",
+  function () {
+    this.classList.remove("animate__heartBeat");
+  },
+);
+document.addEventListener("click", unlockAudio, {
+  once: true,
+  useCapture: true,
+});

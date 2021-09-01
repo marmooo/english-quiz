@@ -224,6 +224,7 @@ function nextProblem() {
   const input = document.getElementById("cse-search-input-box-id");
   answerEn = en;
   answerJa = ja;
+  document.getElementById("reply").textContent = "";
   input.value = ja;
   hideAnswer();
   if (document.getElementById("mode").textContent == "EASY") {

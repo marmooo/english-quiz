@@ -1,4 +1,4 @@
-var CACHE_NAME = "2021-09-02 21:35";
+var CACHE_NAME = '2021-09-12 08:36';
 var urlsToCache = [
   "/english-quiz/",
   "/english-quiz/data/0.tsv",
@@ -16,7 +16,7 @@ var urlsToCache = [
   "/english-quiz/mp3/correct3.mp3",
   "/english-quiz/favicon/original.svg",
   "/english-quiz/signature_pad.min.js",
-  "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css",
+  "https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css",
   "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js",
   "https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css",
 ];

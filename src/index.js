@@ -12,6 +12,7 @@ let firstRun = true;
 const canvasCache = document.createElement("canvas").getContext("2d");
 let englishVoices = [];
 let correctCount = 0;
+loadConfig();
 
 function loadConfig() {
   if (localStorage.getItem("darkMode") == 1) {
@@ -22,7 +23,6 @@ function loadConfig() {
     document.getElementById("voiceOff").classList.remove("d-none");
   }
 }
-loadConfig();
 
 function toggleDarkMode() {
   if (localStorage.getItem("darkMode") == 1) {

@@ -1,4 +1,4 @@
-var CACHE_NAME = '2021-11-06 11:50';
+var CACHE_NAME = '2021-11-27 10:25';
 var urlsToCache = [
   "/english-quiz/",
   "/english-quiz/data/0.tsv",
@@ -15,10 +15,10 @@ var urlsToCache = [
   "/english-quiz/mp3/end.mp3",
   "/english-quiz/mp3/correct3.mp3",
   "/english-quiz/favicon/original.svg",
-  "/english-quiz/signature_pad.min.js",
   "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css",
   "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js",
   "https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css",
+  "https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js",
 ];
 
 self.addEventListener("install", function (event) {

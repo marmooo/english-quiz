@@ -183,9 +183,9 @@ function initSignaturePad(canvas) {
     throttle: 0,
     minDistance: 0,
   });
-  pad.onEnd = function () {
-    predict(this.canvas);
-  };
+  pad.addEventListener("endStroke", () => {
+    predict(pad.canvas);
+  });
   return pad;
 }
 
@@ -353,7 +353,7 @@ customElements.define(
       );
       const canvas = template.querySelector("canvas");
       const pad = initSignaturePad(canvas);
-      template.querySelector(".eraser").onclick = function () {
+      template.querySelector(".eraser").onclick = () => {
         pad.clear();
       };
       pads.push(pad);
@@ -365,7 +365,7 @@ customElements.define(
 canvases.forEach((canvas) => {
   const pad = initSignaturePad(canvas);
   pads.push(pad);
-  canvas.parentNode.querySelector(".eraser").onclick = function () {
+  canvas.parentNode.querySelector(".eraser").onclick = () => {
     pad.clear();
     showPredictResult(canvas, " ");
   };

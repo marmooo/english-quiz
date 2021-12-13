@@ -36,7 +36,7 @@ importScripts("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.j
 
 let model;
 (async () => {
-  model = await tf.loadLayersModel("model/model.json");
+  model = await tf.loadGraphModel("model/model.json");
 })();
 
 self.addEventListener("message", function (e) {

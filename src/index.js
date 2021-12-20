@@ -265,7 +265,6 @@ function initProblems() {
     },
   );
 }
-initProblems();
 
 function searchByGoogle(event) {
   event.preventDefault();
@@ -404,6 +403,8 @@ worker.addEventListener("message", function (e) {
     document.getElementById("searchButton").classList.add("animate__heartBeat");
   }
 });
+
+initProblems();
 
 document.getElementById("mode").onclick = changeMode;
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;

@@ -255,15 +255,15 @@ function nextProblem() {
 
 function initProblems() {
   const grade = document.getElementById("grade").selectedIndex;
-  fetch("data/" + grade + ".tsv").then((response) => response.text()).then(
-    (tsv) => {
+  fetch("data/" + grade + ".tsv")
+    .then((response) => response.text())
+    .then((tsv) => {
       problems = [];
       tsv.split("\n").forEach((line) => {
         const [en, ja] = line.split("\t");
         problems.push([en, ja]);
       });
-    },
-  );
+    });
 }
 
 function searchByGoogle(event) {

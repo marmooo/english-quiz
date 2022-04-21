@@ -1,4 +1,4 @@
-var CACHE_NAME = '2022-04-09 11:16';
+var CACHE_NAME = '2022-04-22 08:25';
 var urlsToCache = [
   "/english-quiz/",
   "/english-quiz/data/0.tsv",
@@ -14,9 +14,9 @@ var urlsToCache = [
   "/english-quiz/model/group1-shard1of1.bin",
   "/english-quiz/mp3/end.mp3",
   "/english-quiz/mp3/correct3.mp3",
-  "/english-quiz/favicon/original.svg",
-  "https://cdn.jsdelivr.net/npm/signature_pad@4.0.4/dist/signature_pad.umd.min.js",
+  "/english-quiz/favicon/favicon.svg",
   "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css",
+  "https://cdn.jsdelivr.net/npm/signature_pad@4.0.4/dist/signature_pad.umd.min.js",
   "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.15.0/dist/tf.min.js",
   "https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css",
 ];

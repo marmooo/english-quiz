@@ -240,11 +240,10 @@ function nextProblem() {
     searchButton.disabled = false;
   }, 2000);
   const [en, ja] = problems[getRandomInt(0, problems.length - 1)];
-  const input = document.getElementById("cse-search-input-box-id");
   answerEn = en;
   answerJa = ja;
   document.getElementById("reply").textContent = "";
-  input.value = ja;
+  document.getElementById("cse-search-input-box-id").value = ja;
   hideAnswer();
   if (document.getElementById("mode").textContent == "EASY") {
     showAnswer();
@@ -399,11 +398,14 @@ const worker = new Worker("worker.js");
 worker.addEventListener("message", (e) => {
   const reply = showPredictResult(canvases[e.data.pos], e.data.result);
   if (reply == answerEn) {
-    const noHint = document.getElementById("answer").classList.contains(
-      "d-none",
-    );
-    if (noHint) {
+    if (document.getElementById("mode").textContent == "EASY") {
       correctCount += 1;
+    } else {
+      const node = document.getElementById("answer");
+      const noHint = node.classList.contains("d-none");
+      if (noHint) {
+        correctCount += 1;
+      }
     }
     playAudio(correctAudio);
     document.getElementById("reply").textContent = "⭕ " + answerEn;
@@ -421,9 +423,12 @@ document.getElementById("restartButton").onclick = countdown;
 document.getElementById("startButton").onclick = countdown;
 document.getElementById("showAnswer").onclick = showAnswer;
 document.getElementById("grade").onchange = initProblems;
-document.getElementById("searchButton").addEventListener("animationend", (e) => {
-  e.target.classList.remove("animate__heartBeat");
-});
+document.getElementById("searchButton").addEventListener(
+  "animationend",
+  (e) => {
+    e.target.classList.remove("animate__heartBeat");
+  },
+);
 document.addEventListener("click", unlockAudio, {
   once: true,
   useCapture: true,

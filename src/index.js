@@ -10,6 +10,7 @@ const gameTime = 180;
 let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
 let pads = [];
 let problems = [];
+let answered = false;
 let answerEn = "Gopher";
 let answerJa = "ゴファー";
 let firstRun = true;
@@ -234,6 +235,7 @@ function showAnswer() {
 }
 
 function nextProblem() {
+  answered = false;
   const searchButton = document.getElementById("searchButton");
   searchButton.disabled = true;
   setTimeout(() => {
@@ -396,8 +398,10 @@ canvases.forEach((canvas) => {
 
 const worker = new Worker("worker.js");
 worker.addEventListener("message", (e) => {
+  if (answered) return;
   const reply = showPredictResult(canvases[e.data.pos], e.data.result);
   if (reply == answerEn) {
+    answered = true;
     if (document.getElementById("mode").textContent == "EASY") {
       correctCount += 1;
     } else {

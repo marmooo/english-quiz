@@ -23,10 +23,6 @@ function loadConfig() {
   if (localStorage.getItem("darkMode") == 1) {
     document.documentElement.dataset.theme = "dark";
   }
-  if (localStorage.getItem("voice") != 1) {
-    document.getElementById("voiceOn").classList.add("d-none");
-    document.getElementById("voiceOff").classList.remove("d-none");
-  }
 }
 
 function toggleDarkMode() {
@@ -36,21 +32,6 @@ function toggleDarkMode() {
   } else {
     localStorage.setItem("darkMode", 1);
     document.documentElement.dataset.theme = "dark";
-  }
-}
-
-function toggleVoice() {
-  if (localStorage.getItem("voice") == 1) {
-    speechSynthesis.cancel();
-    localStorage.setItem("voice", 0);
-    document.getElementById("voiceOn").classList.add("d-none");
-    document.getElementById("voiceOff").classList.remove("d-none");
-  } else {
-    localStorage.setItem("voice", 1);
-    document.getElementById("voiceOn").classList.remove("d-none");
-    document.getElementById("voiceOff").classList.add("d-none");
-    unlockAudio();
-    loopVoice(answerEn, 3);
   }
 }
 
@@ -251,11 +232,7 @@ function nextProblem() {
     showAnswer();
   }
   document.getElementById("wordLength").textContent = answerEn.length;
-  if (localStorage.getItem("voice") == 1) {
-    loopVoice(answerEn, 3);
-  } else {
-    speechSynthesis.cancel();
-  }
+  loopVoice(answerEn, 3);
 }
 
 function initProblems() {
@@ -421,7 +398,6 @@ initProblems();
 
 document.getElementById("mode").onclick = changeMode;
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
-document.getElementById("toggleVoice").onclick = toggleVoice;
 document.getElementById("respeak").onclick = respeak;
 document.getElementById("restartButton").onclick = countdown;
 document.getElementById("startButton").onclick = countdown;

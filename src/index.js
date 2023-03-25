@@ -422,8 +422,8 @@ document.getElementById("showAnswer").onclick = showAnswer;
 document.getElementById("grade").onchange = initProblems;
 document.getElementById("searchButton").addEventListener(
   "animationend",
-  (e) => {
-    e.target.classList.remove("animate__heartBeat");
+  (event) => {
+    event.target.classList.remove("animate__heartBeat");
   },
 );
 document.addEventListener("click", unlockAudio, {

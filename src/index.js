@@ -14,7 +14,8 @@ let answered = false;
 let answerEn = "Gopher";
 let answerJa = "ゴファー";
 let firstRun = true;
-const canvasCache = document.createElement("canvas").getContext("2d");
+const canvasCache = document.createElement("canvas")
+  .getContext("2d", { willReadFrequently: true });
 let englishVoices = [];
 let correctCount = 0;
 loadConfig();

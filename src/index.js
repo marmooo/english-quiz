@@ -1,4 +1,5 @@
 const playPanel = document.getElementById("playPanel");
+const infoPanel = document.getElementById("infoPanel");
 const countPanel = document.getElementById("countPanel");
 const scorePanel = document.getElementById("scorePanel");
 const audioContext = new AudioContext();
@@ -313,6 +314,7 @@ function countdown() {
   clearTimeout(countdownTimer);
   countPanel.classList.remove("d-none");
   playPanel.classList.add("d-none");
+  infoPanel.classList.add("d-none");
   scorePanel.classList.add("d-none");
   const counter = document.getElementById("counter");
   counter.textContent = 3;
@@ -325,6 +327,7 @@ function countdown() {
     } else {
       clearTimeout(countdownTimer);
       countPanel.classList.add("d-none");
+      infoPanel.classList.remove("d-none");
       playPanel.classList.remove("d-none");
       correctCount = 0;
       document.getElementById("searchButton").classList.add(

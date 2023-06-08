@@ -335,7 +335,6 @@ function startGameTimer() {
   }, 1000);
 }
 
-
 function initTime() {
   document.getElementById("time").textContent = gameTime;
 }
@@ -357,9 +356,8 @@ customElements.define(
   class extends HTMLElement {
     constructor() {
       super();
-      const template = document.getElementById("tegaki-box").content.cloneNode(
-        true,
-      );
+      const template = document.getElementById("tegaki-box")
+        .content.cloneNode(true);
       const canvas = template.querySelector("canvas");
       const pad = initSignaturePad(canvas);
       template.querySelector(".eraser").onclick = () => {
@@ -373,9 +371,8 @@ customElements.define(
 
 function createTegakiBox() {
   const div = document.createElement("div");
-  const template = document.getElementById("tegaki-box").content.cloneNode(
-    true,
-  );
+  const template = document.getElementById("tegaki-box")
+    .content.cloneNode(true);
   div.appendChild(template);
   const canvas = div.querySelector("canvas");
   const pad = initSignaturePad(canvas);
@@ -425,12 +422,10 @@ document.getElementById("restartButton").onclick = countdown;
 document.getElementById("startButton").onclick = countdown;
 document.getElementById("showAnswer").onclick = showAnswer;
 document.getElementById("grade").onchange = initProblems;
-document.getElementById("searchButton").addEventListener(
-  "animationend",
-  (event) => {
+document.getElementById("searchButton")
+  .addEventListener("animationend", (event) => {
     event.target.classList.remove("animate__heartBeat");
-  },
-);
+  });
 document.addEventListener("click", unlockAudio, {
   once: true,
   useCapture: true,

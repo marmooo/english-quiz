@@ -8,6 +8,7 @@ loadAudio("end", "mp3/end.mp3");
 loadAudio("correct", "mp3/correct3.mp3");
 const tegakiPanel = document.getElementById("tegakiPanel");
 const gameTime = 180;
+let gameTimer;
 let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
 let pads = [];
 let problems = [];
@@ -290,7 +291,32 @@ function searchByGoogle(event) {
 }
 document.getElementById("cse-search-box-form-id").onsubmit = searchByGoogle;
 
-let gameTimer;
+function countdown() {
+  correctCount = 0;
+  countPanel.classList.remove("d-none");
+  playPanel.classList.add("d-none");
+  infoPanel.classList.add("d-none");
+  scorePanel.classList.add("d-none");
+  const counter = document.getElementById("counter");
+  counter.textContent = 3;
+  const timer = setInterval(() => {
+    const colors = ["skyblue", "greenyellow", "violet", "tomato"];
+    if (parseInt(counter.textContent) > 1) {
+      const t = parseInt(counter.textContent) - 1;
+      counter.style.backgroundColor = colors[t];
+      counter.textContent = t;
+    } else {
+      clearTimeout(timer);
+      countPanel.classList.add("d-none");
+      infoPanel.classList.remove("d-none");
+      playPanel.classList.remove("d-none");
+      document.getElementById("searchButton")
+        .classList.add("animate__heartBeat");
+      startGameTimer();
+    }
+  }, 1000);
+}
+
 function startGameTimer() {
   clearInterval(gameTimer);
   const timeNode = document.getElementById("time");
@@ -309,34 +335,6 @@ function startGameTimer() {
   }, 1000);
 }
 
-let countdownTimer;
-function countdown() {
-  clearTimeout(countdownTimer);
-  countPanel.classList.remove("d-none");
-  playPanel.classList.add("d-none");
-  infoPanel.classList.add("d-none");
-  scorePanel.classList.add("d-none");
-  const counter = document.getElementById("counter");
-  counter.textContent = 3;
-  countdownTimer = setInterval(() => {
-    const colors = ["skyblue", "greenyellow", "violet", "tomato"];
-    if (parseInt(counter.textContent) > 1) {
-      const t = parseInt(counter.textContent) - 1;
-      counter.style.backgroundColor = colors[t];
-      counter.textContent = t;
-    } else {
-      clearTimeout(countdownTimer);
-      countPanel.classList.add("d-none");
-      infoPanel.classList.remove("d-none");
-      playPanel.classList.remove("d-none");
-      correctCount = 0;
-      document.getElementById("searchButton").classList.add(
-        "animate__heartBeat",
-      );
-      startGameTimer();
-    }
-  }, 1000);
-}
 
 function initTime() {
   document.getElementById("time").textContent = gameTime;

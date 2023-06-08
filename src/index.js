@@ -303,7 +303,7 @@ function startGameTimer() {
       playAudio("end");
       playPanel.classList.add("d-none");
       scorePanel.classList.remove("d-none");
-      document.getElementById("score").textContent = correctCount;
+      scoring();
     }
   }, 1000);
 }
@@ -327,7 +327,6 @@ function countdown() {
       countPanel.classList.add("d-none");
       playPanel.classList.remove("d-none");
       correctCount = 0;
-      document.getElementById("score").textContent = correctCount;
       document.getElementById("searchButton").classList.add(
         "animate__heartBeat",
       );
@@ -338,6 +337,10 @@ function countdown() {
 
 function initTime() {
   document.getElementById("time").textContent = gameTime;
+}
+
+function scoring() {
+  document.getElementById("score").textContent = correctCount;
 }
 
 function changeMode(event) {

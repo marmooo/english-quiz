@@ -15,6 +15,7 @@ var urlsToCache = [
   "/english-quiz/model/group1-shard1of1.bin",
   "/english-quiz/mp3/end.mp3",
   "/english-quiz/mp3/correct3.mp3",
+  "/english-quiz/img/surfing-js.png",
   "/english-quiz/favicon/favicon.svg",
   "https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js",
   "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.6.0/dist/tf.min.js",

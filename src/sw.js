@@ -1,4 +1,4 @@
-var CACHE_NAME = "2023-06-24 10:16";
+var CACHE_NAME = "2023-06-26 00:00";
 var urlsToCache = [
   "/english-quiz/",
   "/english-quiz/index.js",
@@ -9,7 +9,6 @@ var urlsToCache = [
   "/english-quiz/data/4.tsv",
   "/english-quiz/data/5.tsv",
   "/english-quiz/data/6.tsv",
-  "/english-quiz/eraser.svg",
   "/english-quiz/worker.js",
   "/english-quiz/model/model.json",
   "/english-quiz/model/group1-shard1of1.bin",

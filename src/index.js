@@ -24,17 +24,17 @@ loadConfig();
 
 function loadConfig() {
   if (localStorage.getItem("darkMode") == 1) {
-    document.documentElement.dataset.theme = "dark";
+    document.documentElement.setAttribute("data-bs-theme", "dark");
   }
 }
 
 function toggleDarkMode() {
   if (localStorage.getItem("darkMode") == 1) {
     localStorage.setItem("darkMode", 0);
-    delete document.documentElement.dataset.theme;
+    document.documentElement.setAttribute("data-bs-theme", "light");
   } else {
     localStorage.setItem("darkMode", 1);
-    document.documentElement.dataset.theme = "dark";
+    document.documentElement.setAttribute("data-bs-theme", "dark");
   }
 }
 
@@ -280,11 +280,7 @@ function searchByGoogle(event) {
   }
   setTegakiPanel();
   if (firstRun) {
-    const gophers = document.getElementById("gophers");
-    while (gophers.firstChild) {
-      gophers.removeChild(gophers.lastChild);
-    }
-    unlockAudio();
+    document.getElementById("gophers").replaceChildren();
     firstRun = false;
   }
   return false;

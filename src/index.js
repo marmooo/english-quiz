@@ -281,6 +281,7 @@ function searchByGoogle(event) {
   setTegakiPanel();
   if (firstRun) {
     document.getElementById("gophers").replaceChildren();
+    document.getElementById("searchResults").classList.remove("d-none");
     firstRun = false;
   }
   return false;

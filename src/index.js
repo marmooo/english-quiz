@@ -28,13 +28,20 @@ function loadConfig() {
   }
 }
 
+// TODO: :host-context() is not supportted by Safari/Firefox now
 function toggleDarkMode() {
   if (localStorage.getItem("darkMode") == 1) {
     localStorage.setItem("darkMode", 0);
     document.documentElement.setAttribute("data-bs-theme", "light");
+    // pads.forEach((pad) => {
+    //   pad.canvas.removeAttribute("style");
+    // })
   } else {
     localStorage.setItem("darkMode", 1);
     document.documentElement.setAttribute("data-bs-theme", "dark");
+    // pads.forEach((pad) => {
+    //   pad.canvas.setAttribute("style", "filter: invert(1) hue-rotate(180deg);");
+    // })
   }
 }
 
@@ -145,7 +152,7 @@ function setTegakiPanel() {
   }
   pads = [];
   for (let i = 0; i < answerEn.length; i++) {
-    // const box = document.createElement("tegaki-box");
+    // const box = new TegakiBox();
     const box = createTegakiBox();
     tegakiPanel.appendChild(box);
   }
@@ -348,23 +355,34 @@ function changeMode(event) {
   }
 }
 
-customElements.define(
-  "tegaki-box",
-  class extends HTMLElement {
-    constructor() {
-      super();
-      const template = document.getElementById("tegaki-box")
-        .content.cloneNode(true);
-      const canvas = template.querySelector("canvas");
-      const pad = initSignaturePad(canvas);
-      template.querySelector(".eraser").onclick = () => {
-        pad.clear();
-      };
-      pads.push(pad);
-      this.attachShadow({ mode: "open" }).appendChild(template);
+class TegakiBox extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.adoptedStyleSheets = [globalCSS];
+
+    const template = document.getElementById("tegaki-box")
+      .content.cloneNode(true);
+    const use = template.querySelector("use");
+    const svgId = use.getAttribute("href").slice(1);
+    const data = document.getElementById(svgId).firstElementChild.cloneNode(true);
+    use.replaceWith(data);
+    this.shadowRoot.appendChild(template);
+
+    const canvas = this.shadowRoot.querySelector("canvas");
+    const pad = initSignaturePad(canvas);
+    this.shadowRoot.querySelector(".eraser").onclick = () => {
+      pad.clear();
+    };
+    pads.push(pad);
+
+    if (document.documentElement.getAttribute("data-bs-theme") == "dark") {
+      this.shadowRoot.querySelector("canvas")
+        .setAttribute("style", "filter: invert(1) hue-rotate(180deg);")
     }
-  },
-);
+  }
+}
+customElements.define("tegaki-box", TegakiBox);
 
 function createTegakiBox() {
   const div = document.createElement("div");
@@ -379,6 +397,24 @@ function createTegakiBox() {
   pads.push(pad);
   return div;
 }
+
+function getGlobalCSS() {
+  let cssText = "";
+  for (const stylesheet of document.styleSheets) {
+    try {
+      for (const rule of stylesheet.cssRules) {
+        cssText += rule.cssText;
+      }
+    } catch {
+      // skip cross-domain issue (Google Fonts)
+    }
+  }
+  const css = new CSSStyleSheet();
+  css.replaceSync(cssText);
+  return css;
+}
+
+const globalCSS = getGlobalCSS();
 
 canvases.forEach((canvas) => {
   const pad = initSignaturePad(canvas);

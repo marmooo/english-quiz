@@ -35,13 +35,13 @@ function toggleDarkMode() {
     document.documentElement.setAttribute("data-bs-theme", "light");
     // pads.forEach((pad) => {
     //   pad.canvas.removeAttribute("style");
-    // })
+    // });
   } else {
     localStorage.setItem("darkMode", 1);
     document.documentElement.setAttribute("data-bs-theme", "dark");
     // pads.forEach((pad) => {
     //   pad.canvas.setAttribute("style", "filter: invert(1) hue-rotate(180deg);");
-    // })
+    // });
   }
 }
 

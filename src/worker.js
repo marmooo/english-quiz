@@ -32,7 +32,7 @@ function predict(imageData) {
   return [letter1, letter2];
 }
 
-importScripts("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.6.0/dist/tf.min.js");
+importScripts("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.8.0/dist/tf.min.js");
 
 let model;
 (async () => {

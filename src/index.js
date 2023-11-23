@@ -365,7 +365,8 @@ class TegakiBox extends HTMLElement {
       .content.cloneNode(true);
     const use = template.querySelector("use");
     const svgId = use.getAttribute("href").slice(1);
-    const data = document.getElementById(svgId).firstElementChild.cloneNode(true);
+    const data = document.getElementById(svgId)
+      .firstElementChild.cloneNode(true);
     use.replaceWith(data);
     this.shadowRoot.appendChild(template);
 
@@ -378,7 +379,7 @@ class TegakiBox extends HTMLElement {
 
     if (document.documentElement.getAttribute("data-bs-theme") == "dark") {
       this.shadowRoot.querySelector("canvas")
-        .setAttribute("style", "filter: invert(1) hue-rotate(180deg);")
+        .setAttribute("style", "filter: invert(1) hue-rotate(180deg);");
     }
   }
 }

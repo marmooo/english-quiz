@@ -441,7 +441,7 @@ worker.addEventListener("message", (e) => {
         correctCount += 1;
       }
     }
-    playAudio("correct");
+    playAudio("correct", 0.3);
     document.getElementById("reply").textContent = "⭕ " + answerEn;
     document.getElementById("searchButton").classList.add("animate__heartBeat");
   }

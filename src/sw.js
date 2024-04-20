@@ -1,4 +1,4 @@
-const CACHE_NAME = "2024-04-14 00:50";
+const CACHE_NAME = "2024-04-20 10:31";
 const urlsToCache = [
   "/english-quiz/",
   "/english-quiz/index.js",
@@ -16,7 +16,7 @@ const urlsToCache = [
   "/english-quiz/mp3/correct3.mp3",
   "/english-quiz/img/surfing-js.png",
   "/english-quiz/favicon/favicon.svg",
-  "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.16.0/dist/tf.min.js",
+  "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.18.0/dist/tf.min.js",
   "https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css",
 ];
 

@@ -292,7 +292,7 @@ function searchByGoogle(event) {
   if (firstRun) {
     document.getElementById("gophers").replaceChildren();
     document.getElementById("searchResults").classList.remove("d-none");
-    firstRun = false;
+    predict(canvases[0]);
   }
   return false;
 }
@@ -430,23 +430,32 @@ canvases.forEach((canvas) => {
 });
 
 const worker = new Worker("worker.js");
-worker.addEventListener("message", (e) => {
-  if (answered) return;
-  const reply = showPredictResult(canvases[e.data.pos], e.data.result);
-  if (reply == answerEn) {
-    answered = true;
-    if (document.getElementById("mode").textContent == "EASY") {
-      correctCount += 1;
-    } else {
-      const node = document.getElementById("answer");
-      const noHint = node.classList.contains("d-none");
-      if (noHint) {
+worker.addEventListener("message", (event) => {
+  if (firstRun) {
+    firstRun = false;
+  } else {
+    if (answered) return;
+    const reply = showPredictResult(
+      canvases[event.data.pos],
+      event.data.result,
+    );
+    if (reply == answerEn) {
+      answered = true;
+      if (document.getElementById("mode").textContent == "EASY") {
         correctCount += 1;
+      } else {
+        const node = document.getElementById("answer");
+        const noHint = node.classList.contains("d-none");
+        if (noHint) {
+          correctCount += 1;
+        }
       }
+      playAudio("correct", 0.3);
+      document.getElementById("reply").textContent = "⭕ " + answerEn;
+      document.getElementById("searchButton").classList.add(
+        "animate__heartBeat",
+      );
     }
-    playAudio("correct", 0.3);
-    document.getElementById("reply").textContent = "⭕ " + answerEn;
-    document.getElementById("searchButton").classList.add("animate__heartBeat");
   }
 });
 

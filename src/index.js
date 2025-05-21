@@ -289,7 +289,7 @@ function nextProblem() {
 async function initProblems() {
   const grade = document.getElementById("grade").selectedIndex;
   const response = await fetch("data/" + grade + ".tsv");
-  const tsv = response.text();
+  const tsv = await response.text();
   problems = [];
   tsv.trimEnd().split("\n").forEach((line) => {
     const [en, ja] = line.split("\t");

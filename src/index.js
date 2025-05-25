@@ -20,6 +20,7 @@ const canvasCache = document.createElement("canvas")
   .getContext("2d", { willReadFrequently: true });
 let englishVoices = [];
 let correctCount = 0;
+loadVoices();
 loadConfig();
 
 function loadConfig() {
@@ -55,6 +56,10 @@ function createAudioContext() {
 }
 
 function unlockAudio() {
+  const uttr = new SpeechSynthesisUtterance("");
+  uttr.lang = "en-US";
+  speechSynthesis.speak(uttr);
+
   if (audioContext) {
     audioContext.resume();
   } else {
@@ -62,7 +67,7 @@ function unlockAudio() {
     loadAudio("end", "mp3/end.mp3");
     loadAudio("correct", "mp3/correct3.mp3");
   }
-  document.removeEventListener("pointerdown", unlockAudio);
+  document.removeEventListener("click", unlockAudio);
   document.removeEventListener("keydown", unlockAudio);
 }
 
@@ -153,7 +158,6 @@ function loadVoices() {
       .filter((voice) => !jokeVoices.includes(voice.voiceURI));
   });
 }
-loadVoices();
 
 function loopVoice(text, n) {
   speechSynthesis.cancel();
@@ -489,5 +493,5 @@ document.getElementById("searchButton")
 document.addEventListener("pointerdown", () => {
   predict(canvases[0]);
 }, { once: true });
-document.addEventListener("pointerdown", unlockAudio, { once: true });
+document.addEventListener("click", unlockAudio, { once: true });
 document.addEventListener("keydown", unlockAudio, { once: true });

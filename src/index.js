@@ -1,4 +1,5 @@
 import signaturePad from "https://cdn.jsdelivr.net/npm/signature_pad@5.1.1/+esm";
+import { createWorker } from "https://cdn.jsdelivr.net/npm/emoji-particle@0.0.4/+esm";
 
 const playPanel = document.getElementById("playPanel");
 const infoPanel = document.getElementById("infoPanel");
@@ -8,6 +9,8 @@ let audioContext;
 const audioBufferCache = {};
 const tegakiPanel = document.getElementById("tegakiPanel");
 const gameTime = 180;
+const emojiParticle = initEmojiParticle();
+const maxParticleCount = 10;
 let gameTimer;
 let canvases = [...tegakiPanel.getElementsByTagName("canvas")];
 let pads = [];
@@ -172,6 +175,30 @@ function respeak() {
   loopVoice(answerEn, 1);
 }
 
+function initEmojiParticle() {
+  const canvas = document.createElement("canvas");
+  Object.assign(canvas.style, {
+    position: "fixed",
+    pointerEvents: "none",
+    top: "0px",
+    left: "0px",
+  });
+  canvas.width = document.documentElement.clientWidth;
+  canvas.height = document.documentElement.clientHeight;
+  document.body.appendChild(canvas);
+
+  const offscreen = canvas.transferControlToOffscreen();
+  const worker = createWorker();
+  worker.postMessage({ type: "init", canvas: offscreen }, [offscreen]);
+
+  globalThis.addEventListener("resize", () => {
+    const width = document.documentElement.clientWidth;
+    const height = document.documentElement.clientHeight;
+    worker.postMessage({ type: "resize", width, height });
+  });
+  return { canvas, offscreen, worker };
+}
+
 function setTegakiPanel() {
   while (tegakiPanel.firstChild) {
     tegakiPanel.removeChild(tegakiPanel.lastChild);
@@ -321,7 +348,6 @@ function searchByGoogle(event) {
 document.getElementById("cse-search-box-form-id").onsubmit = searchByGoogle;
 
 function countdown() {
-  correctCount = 0;
   countPanel.classList.remove("d-none");
   playPanel.classList.add("d-none");
   infoPanel.classList.add("d-none");
@@ -336,6 +362,7 @@ function countdown() {
       counter.textContent = t;
     } else {
       clearTimeout(timer);
+      correctCount = 0;
       countPanel.classList.add("d-none");
       infoPanel.classList.remove("d-none");
       playPanel.classList.remove("d-none");
@@ -467,6 +494,16 @@ worker.addEventListener("message", (event) => {
       if (noHint) {
         correctCount += 1;
       }
+    }
+    for (let i = 0; i < Math.min(correctCount, maxParticleCount); i++) {
+      emojiParticle.worker.postMessage({
+        type: "spawn",
+        options: {
+          particleType: "popcorn",
+          originX: Math.random() * emojiParticle.canvas.width,
+          originY: Math.random() * emojiParticle.canvas.height,
+        },
+      });
     }
     playAudio("correct", 0.3);
     document.getElementById("reply").textContent = "⭕ " + answerEn;

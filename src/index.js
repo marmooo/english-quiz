@@ -426,6 +426,7 @@ class TegakiBox extends HTMLElement {
     const pad = initSignaturePad(canvas);
     this.shadowRoot.querySelector(".eraser").onclick = () => {
       pad.clear();
+      showPredictResult(pad.canvas, " ");
     };
     pads.push(pad);
 
@@ -446,6 +447,7 @@ function createTegakiBox() {
   const pad = initSignaturePad(canvas);
   div.querySelector(".eraser").onclick = () => {
     pad.clear();
+    showPredictResult(pad.canvas, " ");
   };
   pads.push(pad);
   return div;
